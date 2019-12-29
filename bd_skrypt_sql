@@ -1,0 +1,558 @@
+Create Database "Bike('Cycling') and other"
+Go
+Use "Bike('Cycling') and other"
+Go
+
+-------------------------------Create Tables----------------------------------------
+
+CREATE TABLE [type]
+(
+id_type int NOT NULL IDENTITY PRIMARY KEY,
+Name varchar(15) NOT NULL UNIQUE,
+[Status] varchar(15) NOT NULL
+);
+Go
+
+  
+Create Table bike_mark
+(
+id_bike_mark int NOT NULL IDENTITY PRIMARY KEY,
+Name varchar(20) NULL UNIQUE,
+Industry varchar(50) NULL,
+Founded date,
+[Key people] varchar(50),
+id_type int FOREIGN KEY REFERENCES type (id_type) ON DELETE CASCADE
+);
+Go
+   
+
+Create Table bike_model
+(
+id_bike_model int NOT NULL PRIMARY KEY,
+Name varchar(30) NOT NULL UNIQUE,
+id_bike_mark int FOREIGN KEY REFERENCES bike_mark (id_bike_mark)
+);
+Go
+
+
+Create Table  bike_serie
+(
+id_bike_serie int NOT NULL PRIMARY KEY,
+Name varchar(30) NOT NULL,
+id_bike_model int FOREIGN KEY REFERENCES bike_model (id_bike_model)
+);
+Go
+
+
+Create Table bike_modification
+(
+id_bike_modification int NOT NULL  PRIMARY KEY,
+Name varchar(50) NOT NULL,
+id_bike_serie int FOREIGN KEY REFERENCES bike_serie ( id_bike_serie),
+id_bike_model int FOREIGN KEY REFERENCES bike_model (id_bike_model)
+);
+Go
+	 
+	
+Create Table Transmission
+(
+id_transmission int NOT NULL PRIMARY KEY,
+[Carriage structure] varchar(55),
+[The level of the front switch] varchar(20),
+[Rear Switch Level] varchar(50),
+[Cassette level] varchar(20),
+[Shifters construction] varchar(30),
+[Level of shifters] varchar(20),
+[Number of speeds] char(10) CHECK(LEN ([Number of speeds]) > 0)
+);
+Go
+
+ 
+Create Table Brake
+(
+id_brake int NOT NULL PRIMARY KEY,
+[Front brake type] varchar(50),
+[The level of the front brake] varchar(20),
+[Rear brake type] varchar(50),
+[Level rear brake] varchar(20)
+);  
+Go
+
+
+Create Table Steering_control
+(
+id_Steering_control int NOT NULL PRIMARY KEY,
+[The design of the Steering] varchar(30)
+);
+Go
+
+
+Create Table Wheels
+(
+id_Wheels int NOT NULL PRIMARY KEY,
+Diameter VARCHAR(20),
+[Rim material] varchar(50),
+[Double rim] char(10)
+);
+Go
+
+
+Create Table Frame
+(
+id_Frame int NOT NULL PRIMARY KEY,
+[Frame material] varchar(50),
+[Depreciation] varchar(25),
+[The design of the forks] varchar(50),
+[The level of the soft fork] varchar(20),
+[Fork stroke] char(10) CHECK(LEN ([Fork stroke]) >= 0)
+);
+Go
+
+
+Create Table bike_characteristic
+(
+id_bike_characteristic int NOT NULL PRIMARY KEY,
+[Date add in database]  Date,
+id_bike_modification int FOREIGN KEY REFERENCES bike_modification(id_bike_modification),
+id_transmission int FOREIGN KEY REFERENCES Transmission(id_transmission),
+id_brake int FOREIGN KEY REFERENCES Brake(id_brake),
+id_Steering_control int FOREIGN KEY REFERENCES Steering_control(id_Steering_control),
+id_Wheels int FOREIGN KEY REFERENCES Wheels(id_Wheels),
+id_Frame int FOREIGN KEY REFERENCES	Frame(id_Frame)
+);
+Go
+
+------------------------------Insert Data---------------------------
+   
+INSERT INTO [type] VALUES
+('Bike(Cycling)', 'Work'),
+('Car', 'Unfinished'),
+('Byke', 'Unfinished'),
+('Trucks', 'Unfinished'),
+('Retro cars', 'Unfinished');
+	
+	
+INSERT INTO bike_mark VALUES
+('Atom',NULL,'19801111',NULL, 1),
+('BMW',NULL,'19980125',NULL, 1),
+('Cube','Bicycle Manufacturing','19930511','Marcus Pürner', 1),
+('Ghost','Accell Group','19931010','Uwe Kalliwoda and Klaus Möhwald', 1),
+('GT','GT Bicycles','19791103','Richard Long', 1),
+('Scott','Bicycles, skiing and snowboarding equipment','1958','Ed Scott', 1),
+('Stem',NULL,'19680713',NULL, 1);
+
+ 		  
+INSERT INTO bike_model VALUES
+(111, 'DX Classic', 1),
+(112, 'Forester S', 1),
+(113, 'Fox', 1),
+(121, 'Enduro', 2),
+(131, 'X-Race Comp', 3),
+(132, 'X-Race Pro', 3),
+(141, 'Dirt', 4),
+(142, 'SE 5000',4),
+(151, 'Aggressor', 5),
+(152, 'Fly',5),
+(153, 'Outpost Disc Ladies', 5),
+(161, 'Addict CX 20-Speed', 6),
+(162, 'Addict CX RC 20-Speed', 6),
+(171, 'Dynamic', 7);
+ 			  
+
+INSERT INTO bike_serie VALUES
+(211, 'DX Classic', 111),
+(212, 'Forester S', 112),
+(213, 'Fox', 113),
+(221, 'Enduro', 121),
+(231, 'X-Race Comp', 131),
+(232, 'X-Race Pro', 132),
+(241, 'Dirt', 141),
+(242, 'SE 5000', 142),
+(251, 'Aggressor', 151),
+(252, 'Fly', 152),
+(253, 'Outpost Disc Ladies', 153),
+(261, 'Addict CX 20-Speed', 161),
+(262, 'Addict CX RC 20-Speed', 162),
+(271, '2.0', 171),
+(272, '1.0', 171);
+
+
+INSERT INTO bike_modification VALUES
+(1, '2010', 211, 111),
+(2, '2008', 212, 112),
+(3, '2006', 213, 113),
+(4, '2009', 221, 121),
+(5, 'Endur', 231, 131),
+(6, '2009', 232, 132),
+(7, '2009', 241, 141),
+(8, '2008', 241, 141),
+(9, '2010', 251, 151),
+(10, '2010', 252, 152),
+(11, '2010', 253, 153),
+(12, '2010', 261, 161),
+(13, '2010', 262, 162),
+(14, '2.0', 271, 171),
+(15, '1.0', 272, 171);
+
+
+INSERT INTO Transmission VALUES
+(1, 'Non-integrated', 'Low', 'Low', 'Low', 'Trigger double lever', 'Low', '16'),
+(2, NULL, NULL, 'Low+', 'Low+', 'Rotary Knob', 'Low+', '18'),
+(3, NULL, NULL, NULL, NULL, NULL, NULL, '1'),
+(4, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(5, 'Non-integrated', 'Low+', 'Low+', 'Low+', 'Dual Control', 'Low+', '20'),
+(6, 'Integrated', 'Pro', 'Pro', 'Pro', 'Dual Control', 'Pro', '20'),
+(7, 'Non-integrated', NULL, NULL, NULL, 'Dual Control', NULL, '1'),
+(8, 'Non-integrated', 'Low', 'Low', 'Low', 'Dual Control', 'Low', '27'), 
+(9, 'Non-integrated', 'Low', 'Low', 'Low', 'Dual Control', 'Low', '21'),
+(10, 'Non-integrated', 'Low', 'Low', 'Low', 'Dual Control', 'Low', '1'),
+(11, 'Non-integrated', 'Low', 'Low', 'Low', 'Dual Control', 'Low', '24'),
+(12, 'Integrated', 'Pro', 'Pro', 'Pro', 'Dual Control', 'Pro', '20'),
+(13, 'Integrated', 'Pro', 'Pro', 'Pro', 'Dual Control', 'Pro', '20'),
+(14, 'Integrated', 'Low+', 'Low+', 'Low+', NULL, 'Low+', NULL),
+(15, 'Integrated', 'Low+', 'Low+', 'Low+', NULL, 'Low+', NULL); 
+  
+
+ INSERT INTO Brake VALUES
+ (1,'Disc (hydraulic)', 'Pro', 'disc (hydraulic)','Pro'),
+ (2,'V-Brake', 'Low', 'V-Brake','low'),
+ (3, NULL, NULL, 'V-Brake','low+'),
+ (4, NULL, NULL, NULL,NULL),
+ (5, 'V-Brake', 'low+', 'V-Brake','low+'),
+ (6, 'V-Brake', '', 'V-Brake','medium'),
+ (7, 'Disc (hydraulic)', 'Pro', 'Disc (hydraulic)','Pro'),
+ (8, 'Disc (hydraulic)', 'low+', 'Disc (hydraulic)','low+'),
+ (9, 'V-Brake', 'low', 'V-Brake','low'),
+ (10, 'V-Brake', 'low', 'V-Brake','low'),
+ (11, 'Disc', 'low', 'Disc','low'),
+ (12, 'V-Brake', 'Pro', 'V-Brake','Pro'),
+ (13, 'V-Brake', 'Pro', 'V-Brake','Pro'),
+ (14, 'V-Brake', 'low+', 'V-Brake','low+'),
+ (15, 'Disc', 'low+', 'Disc','low+');
+
+   
+INSERT INTO Steering_control VALUES
+(1, 'With Ascent'),
+(2, 'With Ascent'),
+(3, 'With Ascent'),
+(4, 'With Ascent'),
+(5, 'Road'),
+(6, 'Road'),
+(7, 'With Ascent'),
+(8, 'With Ascent'),
+(9, 'With Ascent'),
+(10, 'With Ascent'),
+(11, 'With Ascent'),
+(12, 'Road'),
+(13, 'Road'),
+(14, 'Straight'),
+(15, 'Straight');
+
+		
+ INSERT INTO Wheels VALUES
+ (1, '26', 'Aluminium alloy', '+'),
+ (2, '26', 'Aluminium alloy', '-'),
+ (3, '16', 'Metal', '+'),
+ (4, '16', 'Metal', '+'),
+ (5, '28', 'Aluminium alloy', '+'),
+ (6, '28', 'Aluminium alloy', '+'),
+ (7, '26', 'Aluminium alloy', '-'),
+ (8, '26', 'metal', '+'),
+ (9, '26', 'Aluminium alloy', '+'),
+ (10, '20', 'Metal', '+'),
+ (11, '26', 'Mluminium alloy', '+'),
+ (12, '28', 'Mluminium alloy', '+'),
+ (13, '28', 'Mluminium alloy', '+'),
+ (14, NULL, 'Steel', '-'),
+ (15, NULL, 'Mluminium alloy', '-');
+ 		
+
+ INSERT INTO Frame VALUES
+ (1, 'Aluminium alloy', 'Hard tail', 'spring-elastomeric', 'low', '130'),
+ (2, 'Aluminium alloy', 'Hard tail', 'spring-elastomeric', '', NULL),
+ (3, 'steel', NULL, NULL, NULL, NULL),
+ (4, '', '' , '', '', ''),
+ (5, 'Steel', NULL, NULL, Null, NULL),
+ (6, 'Steel', NULL, NULL, Null, NULL),
+ (7, 'Chromium-molybdenum alloy', 'Hard tail', 'air-oil', 'low', '100'),
+ (8, 'Metal', 'Hard tail', 'air-oil', 'low', '100'),
+ (9, 'Metal', 'Hard tail', 'spring-elastomeric', 'low', '75'),
+ (10, 'Metal', NULL, NULL, NULL, NULL),
+ (11, 'Metal', 'Hard tail', 'spring-elastomeric', 'low', '63'),
+ (12, 'Carbon', NULL, Null, NULL, NULL),
+ (13, 'Carbon', NULL, Null, NULL, NULL),
+ (14, 'Aluminium alloy', 'Hard tail', 'spring-elastomeric', 'low', NULL),
+ (15, 'Aluminium alloy', 'Hard tail', 'spring-elastomeric', 'low+', NULL);
+ 
+
+INSERT INTO bike_characteristic	VALUES
+(1,'20180201',1,1,1,1,1,1),
+(2,'20180125',2,2,2,2,2,2),
+(3,'20170125',3,3,3,3,3,3),
+(4,'20180211',4,4,4,4,4,4),
+(5,'20180124',5,5,5,5,5,5),
+(6,'20160630',6,6,6,6,6,6),
+(7,'20141005',7,7,7,7,7,7),
+(8,'20180217',8,8,8,8,8,8),
+(9,'20110917',9,9,9,9,9,9),
+(10,'20121017',10,10,10,10,10,10),
+(11,'20140903',11,11,11,11,11,11),
+(12,'20131205',12,12,12,12,12,12),
+(13,'20100929',13,13,13,13,13,13),
+(14,'20170419',14,14,14,14,14,14),
+(15,'20180119',15,15,15,15,15,15);
+
+		  
+
+---------------------------Update_BD-----------------------------------------------------------------------------
+
+Use "Bike('Cycling') and other"
+Go
+-------6------------
+CREATE VIEW	 ilosc
+AS
+SELECT bm.id_bike_mark, bm.Name, bm.Industry, bm.Founded, bm.[Key people] from bike_mark bm
+JOIN bike_modification m
+on bm.id_bike_mark=m.id_bike_modification
+GROUP BY bm.id_bike_mark, bm.Name, bm.Industry, bm.Founded, bm.[Key people]
+HAVING COUNT(m.Name)=
+(
+SELECT TOP 10 COUNT(m.Name) AS ilosc 
+FROM bike_modification m
+where m.Name = '2010'
+GROUP BY m.id_bike_modification
+ORDER BY ilosc desc
+);
+
+-------
+
+CREATE VIEW najstarszy
+AS
+SELECT bm.id_bike_mark, bm.Name, bm.Founded, MIN(bm.Founded) najstarszy_founded from bike_mark bm
+JOIN bike_model bmo
+ON bm.id_bike_mark = bmo.id_bike_model
+JOIN bike_serie bs
+ON bm.id_bike_mark = bs.id_bike_serie 
+GROUP BY bm.id_bike_mark, bm.Name, bm.Founded,bm.Industry, bm.[Key people], bmo.Name, bs.Name
+HAVING  bm.Founded =
+(
+select top 1  bm.Founded
+FROM bike_mark bm
+ORDER BY bm.Founded asc
+); 
+ 
+-------7--------
+
+CREATE FUNCTION Return_Wheels_Diameter
+(@id_wheels INT)
+RETURNS VARCHAR(50)
+AS
+BEGIN
+DECLARE @podatek VARCHAR(50);
+IF @id_ < 5
+SET @Diameter = 27.5;
+ELSE 
+set @Diameter='';
+RETURN @Diameter ; 
+END;
+
+SELECT dbo.Return_Wheels_Diameter(4)
+SELECT dbo.Return_Wheels_Diameter(5)
+
+------
+
+Create Function ilosc_transmission()
+Returns Table AS 
+Return (Select t.id_transmission, t.[Number of speeds], t.[Carriage structure], count(t.[Number of speeds]) as ilosc from Transmission t
+inner join bike_modification bm on t.id_transmission=bm.id_bike_modification
+Group by t.[Carriage structure], t.id_transmission, t.[Number of speeds]
+Having Count (t.[Number of speeds]) =1  
+);
+go
+
+SELECT * FROM ilosc_transmission();
+GO
+
+-------8--------
+CREATE PROC uptype
+@id INT,
+@Status VARCHAR(20)
+AS
+BEGIN
+IF EXISTS(SELECT * FROM type WHERE id_type=@id)
+BEGIN
+UPDATE type
+SET Status=@Status
+END
+ELSE  
+PRINT 'Don''t found!'
+END
+			
+exec  uptype '5', 'Work'
+exec  uptype '7', 'Work'
+
+------
+
+CREATE PROC spWheels
+@Industry varchar(50) = N'%',
+@Name	varchar(50)	= N'%'
+
+AS
+SET NOCOUNT ON
+SELECT w.Diameter, w.[Rim material], bm.Name, bm.Industry, bm.Founded FROM Wheels w
+JOIN bike_mark bm
+ON w.id_wheels = bm.id_bike_mark
+WHERE bm.Industry LIKE @Industry  AND bm.Name  LIKE @Name
+GO 
+
+EXEC spWheels 'A%' ,'G%'
+GO
+
+
+-------9--------
+
+Create  Trigger Wheels_add on Wheels
+AFTER INSERT AS
+BEGIN
+DECLARE @Diameter varchar(20)
+Set @Diameter=-1
+Select @Diameter=Diameter from Wheels where Diameter=0 
+If @Diameter != '0'	
+Begin 			  
+RAISERROR ('Diameter nie może być równa zero!',1,2)
+Rollback
+end
+end
+go
+
+insert into Wheels(id_Wheels, Diameter, [Rim material], [Double rim])
+values (64,'1', 'Metal','+');
+select * from Wheels  
+
+--------
+
+CREATE TRIGGER zabron_Founded ON bike_mark
+AFTER UPDATE
+AS
+BEGIN
+DECLARE  @Founded date
+SELECT  @Founded=Founded FROM bike_mark
+IF (@Founded)=NULL
+BEGIN 
+RAISERROR('Nie mozna edytowac, bo zly format "Date"!',1,2)
+ROLLBACK
+END
+END;
+GO
+ 
+UPDATE bike_mark SET Founded='19000101' where id_bike_mark=3;
+GO
+UPDATE bike_mark SET Founded='sadas46546as' where id_bike_mark=3;
+GO
+
+----------
+
+
+CREATE TABLE AuditBudget (
+    ProjectNumber CHAR(4) NULL,
+    UserName CHAR(16) NULL,
+    Date DATETIME NULL,
+    NameOld FLOAT NULL,
+    NameNew FLOAT NULL
+);
+go
+
+
+CREATE TRIGGER trigger_ModifyBudget2
+ON bike_modification AFTER UPDATE
+AS IF UPDATE(Name)
+BEGIN
+DECLARE @NameOld FLOAT
+DECLARE @NameNew FLOAT
+DECLARE @projectNumber CHAR(4)
+
+SELECT @NameOld = (SELECT Name FROM deleted)
+SELECT @NameNew = (SELECT Name FROM inserted)
+SELECT @projectNumber = (SELECT id_bike_modification FROM deleted)
+
+INSERT INTO AuditBudget VALUES
+(@projectNumber, USER_NAME(), GETDATE(), @NameOld, @NAmeNew)
+END
+  
+UPDATE bike_modification
+SET Name = '55'
+WHERE id_bike_modification = 1;
+
+---------
+
+CREATE TABLE [changes_type]
+(
+change_id_type int not null,
+change_name varchar(30) not null,
+CHANGE_DATE datetime not null default getdate(),
+CHANGE_TYPE varchar(10) not null, 
+id_type int NOT NULL IDENTITY PRIMARY KEY,
+Name varchar(15) NOT NULL UNIQUE,
+[Status] varchar(15) NOT NULL
+);
+Go
+
+create trigger changes_type
+on  [type] FOR INSERT, UPDATE, DELETE NOT FOR REPLICATION
+as
+set NOCOUNT ON;
+declare @change_type as varchar(10)
+declare @count as int
+set @change_type = 'inserted'
+select @count = COUNT(*) FROM DELETED
+if @count > 0
+begin
+set @change_type = 'deleted'
+select @count = COUNT(*) from INSERTED
+if @Count > 0
+set @change_type = 'updated'
+end    
+if @change_type = 'deleted'
+IF EXISTS (SELECT 1 FROM inserted) AND EXISTS (SELECT 1 FROM deleted)
+BEGIN
+IF NOT UPDATE(id_type)
+RETURN	
+PRINT 'UPDATE'		
+END
+ELSE IF EXISTS (SELECT 1 FROM inserted) AND NOT EXISTS (SELECT 1 FROM deleted)
+BEGIN
+PRINT 'INSERT'
+END
+ELSE IF EXISTS (SELECT 1 FROM deleted) AND NOT EXISTS (SELECT 1 FROM inserted)
+BEGIN
+PRINT 'DELETE'
+END
+
+INSERT [type] VALUES
+('F1', 'Unfinished'),
+('E-F1', 'Unfinished');
+
+UPDATE type
+SET [Status] = 'Work'
+WHERE id_type IN (2,3)
+
+DELETE type
+WHERE id_type IN (4,5)
+GO
+
+---------
+
+alter table bike_modification
+add  UpdatedBy varchar(50),UpdatedWhen datetime; 
+delete UpdatedBy from bike_modification 
+
+CREATE  TRIGGER KeepTrack ON bike_modification
+FOR INSERT, UPDATE
+AS
+UPDATE bike_modification
+SET bike_modification.UpdatedBy = USER_NAME(),
+	bike_modification.UpdatedWhen = SYSDATETIME()
+FROM inserted, bike_modification
+WHERE inserted.id_bike_modification = bike_modification.id_bike_modification
+ 
+update bike_modification set Name = 3.0 where id_bike_modification=15 
